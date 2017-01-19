@@ -4,7 +4,7 @@ local forestnodelist = {}
 minetest.register_abm({
   nodenames = {"default:tree", "default:aspen_tree", "valleys_c:birch_tree", "valleys_c:cherry_blossom_tree", "valleys_c:fir_tree"},
   neighbors = {"group:leaves"},
-  interval = 20,
+  interval = 21,
   chance = 5,
   catch_up = false,
   action = function(pos, node, active_object_count, active_object_count_wider)
@@ -53,7 +53,7 @@ local pinenodelist = {}
 minetest.register_abm({
   nodenames = {"default:pine_tree"},
   neighbors = {"group:leaves"},
-  interval = 20,
+  interval = 19,
   chance = 20,
   catch_up = false,
   action = function(pos, node, active_object_count, active_object_count_wider)

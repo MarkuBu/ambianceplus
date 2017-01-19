@@ -2,10 +2,10 @@ local dripping_sound_status = 1
 
 
 minetest.register_abm({
-  nodenames = {"default:stone"},
+  nodenames = {"default:stone", "valleys_c:stone_with_lichen", "valleys_c:stone_with_moss", "valleys_c:stone_with_algae"},
   neighbors = {"default:air"},
   interval = 10,
-  chance = 500,
+  chance = 100,
   catch_up = false,
   action = function(pos, node, active_object_count, active_object_count_wider)
     if dripping_sound_status == 0 then
@@ -18,7 +18,7 @@ minetest.register_abm({
 		ppos = player:getpos()
 	end
 	
-	if ppos.y > -10 then
+	if ppos.y > 0 then
 		return
 	end
 	
@@ -37,7 +37,7 @@ minetest.register_abm({
 	print("play dripping")
 	minetest.sound_play("ambplus_caves_dripping", {
 	  pos = pos,
-	  max_hear_distance = 40,
+	  max_hear_distance = 21,
 	  gain = 1 --0.2+1/#path*5,
 	})
 	
@@ -57,10 +57,10 @@ local ambiance_sound_status = 1
 
 
 minetest.register_abm({
-  nodenames = {"default:stone"},
+  nodenames = {"default:stone", "valleys_c:stone_with_lichen", "valleys_c:stone_with_moss", "valleys_c:stone_with_algae"},
   neighbors = {"default:air"},
-  interval = 15,
-  chance = 500,
+  interval = 16,
+  chance = 100,
   catch_up = false,
   action = function(pos, node, active_object_count, active_object_count_wider)
     if ambiance_sound_status == 0 then
@@ -73,7 +73,7 @@ minetest.register_abm({
 		ppos = player:getpos()
 	end
 	
-	if ppos.y > -10 then
+	if ppos.y > 0 then
 		return
 	end
 	
@@ -92,7 +92,7 @@ minetest.register_abm({
 	print("play ambiance")
 	minetest.sound_play("ambplus_caves_ambiance", {
 	  pos = pos,
-	  max_hear_distance = 40,
+	  max_hear_distance = 21,
 	  gain = 1 --0.2+1/#path*5,
 	})
 	
@@ -112,9 +112,9 @@ local water_sound_status = 1
 
 
 minetest.register_abm({
-  nodenames = {"default:water_source"},
+  nodenames = {"default:water_source", "default:river_water_source"},
   neighbors = {"default:air"},
-  interval = 25,
+  interval = 24,
   chance = 10,
   catch_up = false,
   action = function(pos, node, active_object_count, active_object_count_wider)
@@ -128,11 +128,11 @@ minetest.register_abm({
 		ppos = player:getpos()
 	end
 	
-	if ppos.y > -10 then
+	if ppos.y > 0 then
 		return
 	end
 	
-	if vector.distance(pos,ppos) > 40 then
+	if vector.distance(pos,ppos) > 25 then
 		return
 	end
 	
@@ -140,7 +140,7 @@ minetest.register_abm({
 	print("play water")
 	minetest.sound_play("ambplus_caves_water", {
 	  pos = pos,
-	  max_hear_distance = 40,
+	  max_hear_distance = 26,
 	  gain = 1 --0.2+1/#path*5,
 	})
 	
@@ -159,10 +159,10 @@ local waterflowing_sound_status = 1
 
 
 minetest.register_abm({
-  nodenames = {"default:water_flowing"},
+  nodenames = {"default:water_flowing",  "default:river_water_flowing"},
   neighbors = {"default:air"},
   interval = 12,
-  chance = 10,
+  chance = 5,
   catch_up = false,
   action = function(pos, node, active_object_count, active_object_count_wider)
     if waterflowing_sound_status == 0 then
@@ -175,11 +175,11 @@ minetest.register_abm({
 		ppos = player:getpos()
 	end
 	
-	if ppos.y > -10 then
+	if ppos.y > 0 then
 		return
 	end
 	
-	if vector.distance(pos,ppos) > 40 then
+	if vector.distance(pos,ppos) > 25 then
 		return
 	end
 	
@@ -187,7 +187,7 @@ minetest.register_abm({
 	print("play waterflowing")
 	minetest.sound_play("ambplus_caves_water_flowing", {
 	  pos = pos,
-	  max_hear_distance = 40,
+	  max_hear_distance = 26,
 	  gain = 1 --0.2+1/#path*5,
 	})
 	
@@ -202,3 +202,49 @@ minetest.register_abm({
   end,
 })
 
+local lava_sound_status = 1
+
+
+minetest.register_abm({
+  nodenames = {"default:lava_source", "default:lava_flowing"},
+  neighbors = {"default:air"},
+  interval = 14,
+  chance = 20,
+  catch_up = false,
+  action = function(pos, node, active_object_count, active_object_count_wider)
+    if lava_sound_status == 0 then
+		return
+	end
+	
+
+	local ppos
+	for _,player in ipairs(minetest.get_connected_players()) do
+		ppos = player:getpos()
+	end
+	
+	--~ if ppos.y > 0 then
+		--~ return
+	--~ end
+	
+	if vector.distance(pos,ppos) > 25 then
+		return
+	end
+	
+
+	print("play lava")
+	minetest.sound_play("ambplus_caves_lava", {
+	  pos = pos,
+	  max_hear_distance = 26,
+	  gain = 1 --0.2+1/#path*5,
+	})
+	
+	lava_sound_status = 0
+    
+      minetest.after(5,  function()
+
+          lava_sound_status = 1
+        end) -- minetest.after() end
+	
+
+  end,
+})
